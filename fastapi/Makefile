@@ -3,7 +3,8 @@ help:
 
 
 install:
-	
+	conda env create -f rxplain_env.yml
+	conda activate rxplain
 
 dev: 
 	fastapi dev main.py
