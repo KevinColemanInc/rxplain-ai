@@ -34,7 +34,7 @@ function Context() {
             type="text"
             value={inputVal}
             onChange={inputChange}
-            placeholder="Tell us about yourself..."
+            placeholder="Tell us about yourself to give us context to frame our answers..."
             className="input-field"
           />
           <button type="submit" className="send-button">
