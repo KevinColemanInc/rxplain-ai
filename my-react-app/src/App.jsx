@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import './App.css'
-import Contexts from './Contexts'
+import ChatArea from './ChatArea'
 
 function App() {
 
   return (
     <>
-        <Contexts/>
+      <div>
+        <ChatArea />
+      </div>
     </>
   )
 }
