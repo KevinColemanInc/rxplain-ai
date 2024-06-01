@@ -25,6 +25,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
+  justify-content: center;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -67,9 +68,3 @@ button:focus-visible {
   }
 }
 
-.context-container {
-  background-color: white;
-  border-bottom: 2px solid #eae6e6;
-  height: 20vh;
-  margin: 0px 20px;
-}
