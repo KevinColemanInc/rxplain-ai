@@ -10,7 +10,7 @@ function ChatArea() {
     console.log("onPhraseClick", url);
     setChatWindows((prev) => [
       ...prev,
-      <Chat onPhraseClick={onPhraseClick} prompt={url} />,
+      <Chat onPhraseClick={onPhraseClick} prompt={"Tell me about " + url} />,
     ]);
   }
 

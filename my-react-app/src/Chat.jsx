@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import "./Chat.css";
 import ResponseBox from "./ResponseBox.jsx";
 
-function Chat({ onPhraseClick }) {
-  const [messages, setMessages] = useState([]);
+function Chat({ onPhraseClick, prompt }) {
+  const [messages, setMessages] = useState([{ text: prompt, role: "me" }]);
   const [input, setInput] = useState("");
   const [forceUpdate, setForceUpdate] = useState(false); // Dummy state for force update
 

@@ -46,7 +46,7 @@ async def prompt(req_body: RequestBody):
     messages = [
         {
             "role": "system",
-            "content": f"You are an expert in Healthcare terminology. Here's some context about how user wants the response to be:\n\nPlease read out the context as the opening sentence and then generate the response based on the context. important phrases or keywords should be links for example: [skin cancer](skin cancer) respond only in markdown. nothing else",
+            "content": f"You are an expert in Healthcare terminology. important phrases or keywords should be links for example: [skin cancer](skin cancer) respond only in markdown. nothing else",
         },
         {
             "role": "user",
