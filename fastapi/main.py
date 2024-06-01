@@ -61,7 +61,6 @@ def fake_response_streamer():
     ]
 
     for msg in fake_response:
-        time.sleep(0.5)
         yield msg
 
 
