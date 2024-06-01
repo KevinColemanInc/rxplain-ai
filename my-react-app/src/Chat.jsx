@@ -23,7 +23,7 @@ function Chat({ onPhraseClick }) {
 
       try {
         const response = await fetch(
-          "https://683f-131-107-8-152.ngrok-free.app/prompt-static",
+          "https://683f-131-107-8-152.ngrok-free.app/prompt",
           {
             method: "POST",
             headers: {
