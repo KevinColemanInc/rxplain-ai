@@ -17,18 +17,25 @@ function Chat() {
       setInput('');
 
       try {
-        const response = await fetch('/api/llm', {
+        const response = await fetch('https://683f-131-107-8-152.ngrok-free.app/prompt-static', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ message: input }),
+          body: JSON.stringify({ 
+                "new_context": "new_context_value",
+                "old_context": "old_context_value",
+                "history": [{"role": "system", "message": "example message"}],
+                "more_information": "optional info",
+                "text_input": "text_input_value"
+           }),
         });
 
         if (response.ok) {
-          const data = await response.json();
-          const llmMessage = { text: data.response, user: 'gpt' };
-          setMessages((prevMessages) => [...prevMessages, llmMessage]);
+            console.log(response)
+        //   const data = await response.json();
+        //   const llmMessage = { text: data.response, user: 'gpt' };
+        //   setMessages((prevMessages) => [...prevMessages, llmMessage]);
         } else {
           console.error('Failed to get response from the LLM');
         }

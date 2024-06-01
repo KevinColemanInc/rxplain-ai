@@ -5,7 +5,7 @@ function ChatArea() {
 
   return (
     <>
-      <div>
+      <div className='chat-area'>
         <Chat />
       </div>
     </>

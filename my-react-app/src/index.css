@@ -69,5 +69,7 @@ button:focus-visible {
 
 .context-container {
   background-color: white;
-  border-bottom: 2px solid #eae6e6
+  border-bottom: 2px solid #eae6e6;
+  height: 20vh;
+  margin: 0px 20px;
 }

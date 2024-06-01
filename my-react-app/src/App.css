@@ -3,3 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
+.chat-area {
+    height: 80vh;
+}
