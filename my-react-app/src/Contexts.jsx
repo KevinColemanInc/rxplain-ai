@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import FilterButton from './FilterButton'
 
 function Context() {
   const [inputVal, setInputVal] = useState('');
@@ -20,6 +21,9 @@ function Context() {
   return (
     <>
     <div className = "contexts-container">
+      <div className = "filters-area">
+        <FilterButton/>
+      </div>
       <div className="input-area">
         <form onSubmit={submit} className="input-form">
           <input
@@ -31,9 +35,9 @@ function Context() {
           />
           <button type="submit" className="send-button">
           done!
-        </button>
-      </form>
-    </div>
+         </button>
+        </form>
+      </div>
     </div>
 
 
