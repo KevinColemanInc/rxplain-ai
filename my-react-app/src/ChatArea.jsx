@@ -2,14 +2,22 @@ import { useState } from "react";
 import Chat from "./Chat";
 
 function ChatArea() {
+  const [chatWindows, setChatWindows] = useState([
+    <Chat onPhraseClick={onPhraseClick} prompt={"Hello!"} />,
+  ]);
+
   function onPhraseClick(url) {
     console.log("onPhraseClick", url);
+    setChatWindows((prev) => [
+      ...prev,
+      <Chat onPhraseClick={onPhraseClick} prompt={url} />,
+    ]);
   }
 
   return (
     <>
       <div className="chat-area">
-        <Chat onPhraseClick={onPhraseClick} />
+        {chatWindows.map((chatWindow, index) => chatWindow)}
       </div>
     </>
   );
