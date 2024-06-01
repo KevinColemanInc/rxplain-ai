@@ -3,6 +3,9 @@ import ReactMarkdown from "react-markdown";
 // import './ResponseBox.css';
 
 function ResponseBox({ text, onPhraseClick }) {
+  // replace \n with br text
+  text = text.replace(/\\n/g, "");
+  console.log(text);
   const MyLink = ({ children, href }) => (
     <a href={href} onClick={(e) => onClickPhrase(e, href)}>
       {children}
@@ -18,6 +21,7 @@ function ResponseBox({ text, onPhraseClick }) {
       components={{
         a: MyLink,
       }}
+      style={"white-space: 'pre-wrap'"}
     >
       {text}
     </ReactMarkdown>

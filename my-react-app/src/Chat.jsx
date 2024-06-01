@@ -30,7 +30,7 @@ function Chat({ onPhraseClick }) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              new_context: "new_context_value",
+              new_context: "",
               old_context: "old_context_value",
               history: [{ role: "system", message: "example message" }],
               more_information: "optional info",
