@@ -8,3 +8,6 @@ install:
 
 dev: 
 	fastapi dev main.py
+
+exportdocs:
+	python export.py
