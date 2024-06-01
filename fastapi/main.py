@@ -41,29 +41,20 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.get("/prompt")
+@app.post("/prompt")
 async def prompt(req_body: RequestBody):
     messages = [
         {
             "role": "system",
-            "content": f"You are an expert in Healthcare terminology. Here's some context about how user wants the response to be: {req_body.new_context}\n\nPlease read out the context as the opening sentence and then generate the response based on the context.",
+            "content": f"You are an expert in Healthcare terminology. Here's some context about how user wants the response to be: {req_body.new_context}\n\nPlease read out the context as the opening sentence and then generate the response based on the context. important phrases or keywords should be links for example: [skin cancer](skin cancer) respond only in markdown. nothing else",
+        },
+        {
+            "role": "user",
+            "content": f"Please provide more information about {req_body.more_information}\n.{req_body.text_input}.",
         },
     ]
-    if len(req_body.history) > 0:
-        messages.append(req_body.req_body)
-    messages.append(
-        [
-            {
-                "role": "user",
-                "content": f"{req_body.history}.\nPlease provide more information about {req_body.more_information}\n.{req_body.text_input}.",
-            }
-        ]
-    )
-
     print(messages)
-    response = client.chat.completions.create(
-        model="gpt-4-0125-preview", messages=messages
-    )
+    response = client.chat.completions.create(model="gpt-4o", messages=messages)
     print(response.choices[0].message.content)
 
     # Return an instance of PromptResponse
