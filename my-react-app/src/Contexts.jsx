@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import FilterButton from './FilterButton'
+import './Contexts.css'
 
 function Context() {
   const [inputVal, setInputVal] = useState('');
@@ -13,6 +14,7 @@ function Context() {
   const submit = (input) => {
     input.preventDefault();
     if (inputVal.trim() !== '') {
+      setFilters([...filters, inputVal]);
       setInputVal('');
     }
     console.log(inputVal)
@@ -22,7 +24,9 @@ function Context() {
     <>
     <div className = "contexts-container">
       <div className = "filters-area">
-        <FilterButton/>
+        {filters.map((filter, index) => (
+          <FilterButton key = {index} label={filter}/>
+        ))}
       </div>
       <div className="input-area">
         <form onSubmit={submit} className="input-form">
@@ -34,8 +38,8 @@ function Context() {
             className="input-field"
           />
           <button type="submit" className="send-button">
-          done!
-         </button>
+            ↑
+          </button>
         </form>
       </div>
     </div>
