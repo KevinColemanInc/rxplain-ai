@@ -1,15 +1,18 @@
-import { useState } from 'react'
-import Chat from './Chat'
+import { useState } from "react";
+import Chat from "./Chat";
 
 function ChatArea() {
+  function onPhraseClick(url) {
+    console.log("onPhraseClick", url);
+  }
 
   return (
     <>
       <div>
-        <Chat />
+        <Chat onPhraseClick={onPhraseClick} />
       </div>
     </>
-  )
+  );
 }
 
-export default ChatArea
+export default ChatArea;
