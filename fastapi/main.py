@@ -25,12 +25,11 @@ app.add_middleware(
 
 class HistoryItem(BaseModel):
     role: str
-    message: str
+    content: str
 
 
 class RequestBody(BaseModel):
     new_context: str
-    old_context: str
     history: List[HistoryItem]
     more_information: Optional[str]
     text_input: str
@@ -46,14 +45,17 @@ async def prompt(req_body: RequestBody):
     messages = [
         {
             "role": "system",
-            "content": f"You are an expert in Healthcare terminology. important phrases or keywords should be links for example: [skin cancer](skin cancer) respond only in markdown. nothing else",
-        },
+            "content": f"You are an expert in Healthcare terminology be empathetic. important phrases or keywords should be bracketed for example: [skin cancer] context: {req_body.new_context}",
+        }
+    ]
+    messages = messages + req_body.history
+    messages.append(
         {
             "role": "user",
             "content": f"Please provide more information about {req_body.more_information}\n.{req_body.text_input}.",
-        },
-    ]
-    print(messages)
+        }
+    )
+    print("messages", messages)
     response = client.chat.completions.create(model="gpt-4o", messages=messages)
     print(response.choices[0].message.content)
 
@@ -64,12 +66,12 @@ async def prompt(req_body: RequestBody):
 def fake_response_streamer():
     fake_response = [
         b"Sure, here's some information about lentil soup with marked interesting or complex phrases:",
-        b"Lentil soup is a [hearty](hearty) and [nutritious](nutritious) dish made from [lentils](lentils), a type of ",
+        b"Lentil soup is a [hearty](hearty) and [nutritious](nutritious) dish made from [lentils soup](lentils), a type of ",
         b"[legume](legume) known for their [high protein](high protein) and [fiber content](fiber content). [Lentils](",
         b"lentils) come in various [colors](colors) such as [brown](brown), [green](green), and [red](red), each o",
         b"ffering a slightly different [texture](texture) and [flavor profile](flavor profile).",
         b"To make lentil soup, [lentils](lentils) are [cooked](cooked) with [aromatic](aromatic) [vegetables](vegetabl",
-        b"es) such as [onions](onions), [carrots](carrots), and [celery](celery) in a [flavorful](flavorful) [broth](b",
+        b'es) such as :item[**Sparse Transformers**]{ to="Sparse Transformers" }, [carrots](carrots), and [celery](celery) in a [flavorful](flavorful) [broth](b',
         b"roth) or [stock](stock). [Herbs](herbs) and [spices](spices) like [cumin](cumin), [coriander](coriander), an",
         b"d [bay leaves](bay leaves) are often added to enhance the [taste](taste) and [aroma](aroma) of the soup.",
     ]

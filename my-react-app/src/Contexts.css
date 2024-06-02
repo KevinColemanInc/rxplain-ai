@@ -9,8 +9,10 @@
     border-radius: 15px;
     box-sizing: border-box;
     padding: 0px;
-  }
+}
 
-  .filters-area {
+.filters-area {
     padding: 5px;
-  }
+    display: flex;
+    flex-direction: row;
+}
