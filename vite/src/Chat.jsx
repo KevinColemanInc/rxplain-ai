@@ -29,21 +29,18 @@ function Chat({ onPhraseClick, prompt, contexts }) {
     setInput("");
 
     try {
-      const response = await fetch(
-        "https://683f-131-107-8-152.ngrok-free.app/prompt",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            new_context: contexts.join(" "),
-            history: messages,
-            more_information: "optional info",
-            text_input: input,
-          }),
-        }
-      );
+      const response = await fetch("http://localhost:8000/prompt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          new_context: contexts.join(" "),
+          history: messages,
+          more_information: "optional info",
+          text_input: input,
+        }),
+      });
 
       if (response.ok) {
         const data = await response.text();
