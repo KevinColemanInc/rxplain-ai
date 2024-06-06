@@ -1,6 +1,8 @@
-from fastapi import FastAPI
-import time
+from dotenv import load_dotenv
 
+load_dotenv()
+
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
@@ -14,9 +16,13 @@ client = openai.OpenAI(api_key=api_key)
 app = FastAPI()
 
 # Set up CORS to allow requests from any origin
+origins = [
+    "http://localhost:5173",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -56,7 +62,7 @@ async def prompt(req_body: RequestBody):
         }
     )
     print("messages", messages)
-    response = client.chat.completions.create(model="gpt-4o", messages=messages)
+    response = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages)
     print(response.choices[0].message.content)
 
     # Return an instance of PromptResponse
