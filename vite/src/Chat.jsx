@@ -43,7 +43,7 @@ function Chat({ onPhraseClick, prompt, contexts }) {
       });
 
       if (response.ok) {
-        const data = await response.text();
+        const data = await response.json();
         const llmMessage = { content: data, role: "system" };
         setMessages((prevMessages) => [
           ...prevMessages,
