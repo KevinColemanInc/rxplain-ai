@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import FilterButton from "./FilterButton";
 import "./Contexts.css";
 
@@ -21,11 +21,13 @@ function Context({ filters, setFilters }) {
   return (
     <>
       <div className="contexts-container">
-        <div className="filters-area">
-          {filters.map((filter, index) => (
-            <FilterButton key={index} label={filter} />
-          ))}
-        </div>
+        {filters.length > 0 ? (
+          <div className="wrap-filter-area">
+            {filters.map((filter, index) => (
+              <FilterButton key={index} label={filter} />
+            ))}
+          </div>
+        ) : null}
         <div className="input-area">
           <form onSubmit={submit} className="input-form">
             <input

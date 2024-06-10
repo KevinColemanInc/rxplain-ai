@@ -51,16 +51,30 @@
     padding: 5px 10px;
     border-radius: 50px;
     border: none;
-    background-color: #605362;
-    color: #e3e2e2;
+    background-color: #CFD8DC;
+    color: #FFFFFF;
     margin-left: 10px;
+  }
+
+  .send-button:hover {
+    background-color: #29B6F6;
+    color: #FFF;
+  }
+  
+  .send-button:active {
+    background-color: #29B6F6;
+    color: #FFF;
+    border: none;
+  }
+
+  .send-button:active {
+    border: none;
   }
 
   .input-area {
     padding: 0px;
-    border-radius: 15px;
+    border-radius: 10px;
     border: none;
     margin: 10px;
-    background-color: #e3e2e2;
+    background-color: #F8F9F9;
   }
-  

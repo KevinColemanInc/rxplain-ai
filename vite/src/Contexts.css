@@ -1,18 +1,30 @@
 .contexts-container {
-    display: flex;
-    flex-direction: column;
-    height: 10%;
-    width: 100%;
-    margin: 0 auto;
-    max-width: 600px;
-    border: 1px solid #b9afaf;
-    border-radius: 15px;
-    box-sizing: border-box;
-    padding: 0px;
+  display: flex;
+  flex-direction: column;
+  height: 10%;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 600px;
+  border: 1px solid #cfd8dc;
+  border-radius: 12px;
+  box-sizing: border-box;
+  padding: 0px;
+}
+
+.wrap-filter-area {
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
+  justify-content: flex-start;
 }
 
 .filters-area {
-    padding: 5px;
-    display: flex;
-    flex-direction: row;
+  padding: 10px 10px 0px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.btn-filter {
+  background-color: beige;
 }
