@@ -1,24 +1,18 @@
-import { useState } from 'react'
+import { useState } from "react";
 
 function FilterButton({ label }) {
-    const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
+  if (!isVisible) return null;
+  return (
+    <div className="filters-area">
+      <button
+        onClick={() => setIsVisible(false)}
+        className="text-gray-500 hover:bg-red-500 hover:text-white rounded-full flex items-center justify-center bg-sky-200"
+      >
+        {label} &times;
+      </button>
+    </div>
+  );
+}
 
-    if (!isVisible) return null;
-
-    
-  
-    return (
-      <>
-        <div className="filters-area">
-          <button
-            onClick={() => setIsVisible(false)}
-            className="ml-2 text-white hover:bg-red-500 rounded-full w-6 h-6 flex items-center justify-center"
-          >
-            {label} &times;
-          </button>
-        </div>
-      </>
-    );
-  }
-
-export default FilterButton
+export default FilterButton;

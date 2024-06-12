@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Chat.css";
 import ResponseBox from "./ResponseBox.jsx";
 
-function Chat({ onPhraseClick, prompt, contexts }) {
+function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
   const [input, setInput] = useState("");
   const [forceUpdate, setForceUpdate] = useState(false); // Dummy state for force update
   const [messages, setMessages] = useState([]);
@@ -11,7 +11,9 @@ function Chat({ onPhraseClick, prompt, contexts }) {
   useEffect(() => {
     if (prompt && prompt.trim() !== "" && !hasCalledLLMRef.current) {
       console.log("Calling callLLM with prompt:", prompt);
-      callLLM("Tell me about " + prompt);
+      callLLM("Tell me about " + prompt).finally(() => {
+        hasCalledLLMRef.current = false; // Reset the ref to false after calling callLLM
+      });
       hasCalledLLMRef.current = true; // Set the ref to true after calling callLLM
     } else {
       console.log(
@@ -43,7 +45,7 @@ function Chat({ onPhraseClick, prompt, contexts }) {
       });
 
       if (response.ok) {
-        const data = await response.text();
+        const data = await response.json();
         const llmMessage = { content: data, role: "system" };
         setMessages((prevMessages) => [
           ...prevMessages,
@@ -73,7 +75,7 @@ function Chat({ onPhraseClick, prompt, contexts }) {
   }, [forceUpdate]);
 
   return (
-    <div className="chat-container">
+    <div className={`${containerClassName} chat-container bg-white`}>
       <div className="messages-container">
         {/* Render both user messages and default responses */}
         {messages.map(
@@ -82,11 +84,11 @@ function Chat({ onPhraseClick, prompt, contexts }) {
               <div
                 key={index}
                 className={`message ${
-                  message.role === "user" ? "my-message" : "gpt"
+                  message.role === "user" ? `my-message` : "gpt"
                 }`}
               >
                 {message.role === "user" ? (
-                  <div>{message.content}</div> // Render user message.text
+                  <div className="text-black font-medium font-mono">{message.content}</div> // Render user message.text
                 ) : (
                   <ResponseBox
                     onPhraseClick={onPhraseClick}

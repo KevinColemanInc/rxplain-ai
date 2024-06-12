@@ -1,24 +1,35 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Chat from "./Chat";
 
 function ChatArea({ contexts }) {
-  console.log("chatarea.contexts", contexts);
-
   const [chatWindows, setChatWindows] = useState([""]);
+  const scrollList = useRef();
 
-  function onPhraseClick(url) {
-    console.log("onPhraseClick", url);
-    setChatWindows((prev) => [...prev, url]);
+  function onPhraseClick(url, chatWindowIndex) {
+    setChatWindows((prev) => {
+      const newIndex = chatWindowIndex + 1;
+      if (!prev[newIndex]) {
+        // Scroll to the end of the chat list
+        setTimeout(() => {
+          scrollList.current.scrollLeft = scrollList.current.scrollWidth;
+        }, 50);
+        return [...prev, url];
+      } else {
+        prev[newIndex] = url;
+        return [...prev];
+      }
+    });
   }
 
   return (
     <>
-      <div className="chat-area">
+      <div ref={scrollList} className="chat-area">
         {chatWindows.map((chatWindow, index) => (
           <Chat
             key={index}
-            onPhraseClick={onPhraseClick}
+            onPhraseClick={(url) => onPhraseClick(url, index)}
             prompt={chatWindow}
+            containerClassName={chatWindows.length < 2 ? "mx-auto" : ""}
             contexts={contexts}
           />
         ))}
