@@ -24,9 +24,10 @@
 }
 
 .my-message {
-  background-color: #dcf8c6;
+  background-color: rgb(186 230 253);
   align-self: flex-end;
   text-align: right;
+  border-radius: 30px;
 }
 
 .gpt-message {

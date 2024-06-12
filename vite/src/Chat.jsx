@@ -75,7 +75,7 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
   }, [forceUpdate]);
 
   return (
-    <div className={`${containerClassName} chat-container`}>
+    <div className={`${containerClassName} chat-container bg-white`}>
       <div className="messages-container">
         {/* Render both user messages and default responses */}
         {messages.map(
@@ -84,11 +84,11 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
               <div
                 key={index}
                 className={`message ${
-                  message.role === "user" ? "my-message" : "gpt"
+                  message.role === "user" ? `my-message` : "gpt"
                 }`}
               >
                 {message.role === "user" ? (
-                  <div>{message.content}</div> // Render user message.text
+                  <div className="text-black font-medium font-mono">{message.content}</div> // Render user message.text
                 ) : (
                   <ResponseBox
                     onPhraseClick={onPhraseClick}
