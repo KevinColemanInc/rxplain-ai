@@ -27,7 +27,10 @@ function ChatArea({ contexts }) {
 
   return (
     <>
-      <div ref={scrollList} className="chat-area">
+      <div
+        ref={scrollList}
+        class="flex h-full gap-4 flex-row overflow-x-auto pb-5 pl-2 pr-2"
+      >
         {chatWindows.map((chatWindow, index) => (
           <Chat
             key={index}
