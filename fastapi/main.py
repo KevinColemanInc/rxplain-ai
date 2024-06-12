@@ -17,7 +17,7 @@ app = FastAPI()
 
 # Set up CORS to allow requests from any origin
 origins = [
-    "http://localhost:5173",
+    "http://localhost:8080",
 ]
 
 app.add_middleware(
@@ -55,10 +55,11 @@ async def prompt(req_body: RequestBody):
         }
     ]
     messages = messages + req_body.history
+
     messages.append(
         {
             "role": "user",
-            "content": f"Please provide more information about {req_body.more_information}\n.{req_body.text_input}.",
+            "content": f"Please provide more information about {req_body.text_input}.",
         }
     )
     print("messages", messages)

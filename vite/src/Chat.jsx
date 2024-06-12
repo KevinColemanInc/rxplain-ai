@@ -40,7 +40,6 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
         body: JSON.stringify({
           new_context: contexts.join(" "),
           history: messages,
-          more_information: "optional info",
           text_input: input,
         }),
       });
@@ -76,20 +75,21 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
   }, [forceUpdate]);
 
   return (
-    <div className={`${containerClassName} chat-container bg-white`}>
-      <div className="messages-container">
-        {/* Render both user messages and default responses */}
+    <div
+      className={`${containerClassName} flex flex-col h-full w-100 max-w-600 border border-gray-300 rounded flex-shrink-0 bg-white`}
+    >
+      <div className="flex-1 overflow-y-auto p-2.5 rounded-[5px] mb-2.5">
         {messages.map(
           (message, index) =>
             message.content && (
               <div
                 key={index}
-                className={`message ${
-                  message.role === "user" ? `my-message` : "gpt"
-                }`}
+                className={`my-1.5 p-2.5 rounded-[5px] ${message.role === "user" ? "bg-blue-200 self-end text-right rounded-[30px]" : "bg-white self-start text-left"}`}
               >
                 {message.role === "user" ? (
-                  <div className="text-black font-medium font-mono">{message.content}</div> // Render user message.text
+                  <div className="text-black font-medium font-mono">
+                    {message.content}
+                  </div>
                 ) : (
                   <ResponseBox
                     onPhraseClick={onPhraseClick}
@@ -100,17 +100,19 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
             )
         )}
       </div>
-
-      <div className="input-area">
-        <form onSubmit={handleSendMessage} className="input-form">
+      <div className="p-0 rounded border-none m-2.5 bg-gray-100">
+        <form onSubmit={handleSendMessage} className="flex m-2.5">
           <input
             type="text"
             value={input}
             onChange={handleInputChange}
             placeholder="Type a message..."
-            className="input-field"
+            className="flex-1 bg-transparent outline-none"
           />
-          <button type="submit" className="send-button">
+          <button
+            type="submit"
+            className="py-1.5 px-2.5 rounded-[50px] border-none bg-gray-400 text-white ml-2.5 hover:bg-blue-400 active:bg-blue-400"
+          >
             ↑
           </button>
         </form>
