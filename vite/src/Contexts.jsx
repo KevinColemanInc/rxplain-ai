@@ -19,31 +19,29 @@ function Context({ filters, setFilters }) {
   };
 
   return (
-    <>
-      <div className="contexts-container">
-        {filters.length > 0 ? (
-          <div className="wrap-filter-area">
-            {filters.map((filter, index) => (
-              <FilterButton key={index} label={filter} />
-            ))}
-          </div>
-        ) : null}
-        <div className="input-area">
-          <form onSubmit={submit} className="input-form">
-            <input
-              type="text"
-              value={inputVal}
-              onChange={inputChange}
-              placeholder="Tell us about yourself to give us context to frame our answers..."
-              className="input-field"
-            />
-            <button type="submit" className="send-button">
-              ↑
-            </button>
-          </form>
+    <div className="contexts-container">
+      {filters.length > 0 ? (
+        <div className="wrap-filter-area">
+          {filters.map((filter, index) => (
+            <FilterButton key={index} label={filter} />
+          ))}
         </div>
+      ) : null}
+      <div className="input-area">
+        <form onSubmit={submit} className="input-form">
+          <input
+            type="text"
+            value={inputVal}
+            onChange={inputChange}
+            placeholder="Tell us about yourself to give us context to frame our answers..."
+            className="input-field"
+          />
+          <button type="submit" className="send-button">
+            ↑
+          </button>
+        </form>
       </div>
-    </>
+    </div>
   );
 }
 

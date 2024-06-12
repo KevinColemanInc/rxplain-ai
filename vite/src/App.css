@@ -4,7 +4,11 @@
 @tailwind utilities;
 
 .chat-area {
-    display: flex;
-    flex-direction: row;
-    height: 80vh;
+  /* display: flex; */
+  height: 100%;
+  gap: 1rem;
+  /* flex-direction: row; */
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-bottom: 20px;
 }

@@ -10,18 +10,59 @@ function ResponseBox({ text, onPhraseClick }) {
     console.log("e.text", e.target.textContent);
     onPhraseClick(e.target.textContent);
   }
-  const matches = [...text.matchAll(new RegExp(/\[(\s*[\w\s\-\\'\\*]+)\s*\]/gi))];
-  
+  const matches = [
+    ...text.matchAll(new RegExp(/\[(\s*[\w\s\-\\'\\*]+)\s*\]/gi)),
+  ];
+
   if (matches.length > 0) {
-    for(let i = 0; i < matches.length; i++) {
-      text = text.replace(matches[i][0], `[${matches[i][1]}](${matches[i][1]})`);
+    for (let i = 0; i < matches.length; i++) {
+      const matchItem = matches[i];
+      const [matchedContent, phrase] = matchItem;
+      text = text.replace(matchedContent, `[${phrase}](#)`);
     }
   }
-  
-  return <Markdown components={{
-    a: ({node, ...props}) => <a {...props} href="#" onClick={(e) => onClickPhrase(e, props.href)}>{props.children}</a>
-  
-  }}>{text}</Markdown>;
+
+  return (
+    <Markdown
+      components={{
+        a: (props) => {
+          return (
+            <a
+              {...props}
+              role="button"
+              onClick={(e) => onClickPhrase(e, props.children)}
+            >
+              {props.children}
+            </a>
+          );
+        },
+        strong: (props) => {
+          return (
+            <a
+              className="text-primary font-bold"
+              role="button"
+              onClick={(e) => onClickPhrase(e, props.children)}
+            >
+              {props.children}
+            </a>
+          );
+        },
+        b: (props) => {
+          return (
+            <a
+              className="text-primary font-bold"
+              role="button"
+              onClick={(e) => onClickPhrase(e, props.children)}
+            >
+              {props.children}
+            </a>
+          );
+        },
+      }}
+    >
+      {text}
+    </Markdown>
+  );
 }
 
 ResponseBox.propTypes = {
