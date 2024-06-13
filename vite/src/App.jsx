@@ -7,9 +7,13 @@ function App() {
   const [filters, setFilters] = useState([]);
 
   return (
-    <main className="flex flex-col justify-center gap-4 h-svh w-svw bg-gray-100">
-      <Contexts filters={filters} setFilters={setFilters} />
-      <div className="flex-1 max-h-[80svh] grid grid-cols-1">
+    <main className="flex flex-col justify-center items-center gap-4 h-screen w-screen bg-gray-100">
+      <Contexts
+        filters={filters}
+        setFilters={setFilters}
+        className="flex justify-center w-full max-w-screen-2xl"
+      />
+      <div className="flex-1 max-h-[80vh] grid grid-cols-1 w-full">
         <ChatArea contexts={filters} />
       </div>
     </main>

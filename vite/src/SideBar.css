@@ -1,17 +1,16 @@
-
-  .sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 10px;
-  height: 10px;
-  background-color: #333;
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 20px;
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    background-color: #333;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 20px;
 }
 
 .sidebar.open {
-  width: 150px;
-  height: 100%;
+    width: 150px;
+    height: 100%;
 }
