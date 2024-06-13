@@ -26,22 +26,20 @@ function ChatArea({ contexts }) {
   }
 
   return (
-    <>
-      <div
-        ref={scrollList}
-        class="flex h-full gap-4 flex-row overflow-x-auto pb-5 pl-2 pr-2"
-      >
-        {chatWindows.map((chatWindow, index) => (
-          <Chat
-            key={index}
-            onPhraseClick={(url) => onPhraseClick(url, index)}
-            prompt={chatWindow}
-            containerClassName={chatWindows.length < 2 ? "mx-auto" : ""}
-            contexts={contexts}
-          />
-        ))}
-      </div>
-    </>
+    <div
+      ref={scrollList}
+      class="flex h-full gap-4 flex-row overflow-x-auto pb-5 pl-2 pr-2"
+    >
+      {chatWindows.map((chatWindow, index) => (
+        <Chat
+          key={index}
+          onPhraseClick={(url) => onPhraseClick(url, index)}
+          prompt={chatWindow}
+          containerClassName={chatWindows.length < 2 ? "mx-auto" : ""}
+          contexts={contexts}
+        />
+      ))}
+    </div>
   );
 }
 

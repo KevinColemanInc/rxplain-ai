@@ -13,9 +13,10 @@ function App() {
         setFilters={setFilters}
         className="flex justify-center w-full max-w-screen-2xl"
       />
-      <div className="flex-1 max-h-[80vh] grid grid-cols-1 w-full">
-        <ChatArea contexts={filters} />
-      </div>
+      <ChatArea
+        contexts={filters}
+        className="flex-1 max-h-[80vh] grid grid-cols-1 w-full"
+      />
     </main>
   );
 }

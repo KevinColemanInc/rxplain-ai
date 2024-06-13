@@ -1,6 +1,5 @@
 import { useState } from "react";
 import FilterButton from "./FilterButton";
-import "./Contexts.css";
 
 function Context({ filters, setFilters }) {
   const [inputVal, setInputVal] = useState("");
@@ -30,7 +29,7 @@ function Context({ filters, setFilters }) {
       <div className="flex-1  outline-none m-2 rounded w-full">
         <form
           onSubmit={submit}
-          className="flex items-center bg-gray-100 space-x-4 justify-between m-2 p-2"
+          className="flex items-center bg-gray-100 space-x-4 justify-between m-2 p-2 rounded"
         >
           <input
             type="text"

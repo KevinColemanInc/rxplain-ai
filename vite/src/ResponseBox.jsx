@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
 import Markdown from "react-markdown";
 
-// import './ResponseBox.css';
-
 function ResponseBox({ text, onPhraseClick }) {
   function onClickPhrase(e, url) {
     e.preventDefault();
