@@ -11,6 +11,7 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
   useEffect(() => {
     if (prompt && prompt.trim() !== "" && !hasCalledLLMRef.current) {
       console.log("Calling callLLM with prompt:", prompt);
+      setMessages(() => []);
       callLLM("Tell me about " + prompt).finally(() => {
         hasCalledLLMRef.current = false; // Reset the ref to false after calling callLLM
       });

@@ -11,11 +11,15 @@ function ChatArea({ contexts }) {
       if (!prev[newIndex]) {
         // Scroll to the end of the chat list
         setTimeout(() => {
-          scrollList.current.scrollLeft = scrollList.current.scrollWidth;
+          scrollList.current.scrollTo({
+            left: scrollList.current.scrollWidth,
+            behavior: "smooth",
+          });
         }, 50);
         return [...prev, url];
       } else {
         prev[newIndex] = url;
+        prev.splice(newIndex + 1, prev.length - newIndex - 1);
         return [...prev];
       }
     });
