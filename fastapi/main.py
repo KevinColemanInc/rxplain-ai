@@ -37,7 +37,6 @@ class HistoryItem(BaseModel):
 class RequestBody(BaseModel):
     new_context: str
     history: List[HistoryItem]
-    more_information: Optional[str]
     text_input: str
 
 
