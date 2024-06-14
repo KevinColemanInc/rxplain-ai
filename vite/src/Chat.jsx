@@ -3,6 +3,7 @@ import ResponseBox from "./ResponseBox.jsx";
 
 function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
   const [input, setInput] = useState("");
+  const [answer, setAnswer] = useState("");
   const [forceUpdate, setForceUpdate] = useState(false); // Dummy state for force update
   const [messages, setMessages] = useState([]);
   const hasCalledLLMRef = useRef(false); // Ref to track if callLLM has been called
@@ -31,7 +32,7 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
     setInput("");
 
     try {
-      const response = await fetch("http://localhost:8000/prompt-static", {
+      const response = fetch("http://localhost:8000/prompt", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,21 +43,29 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
           text_input: input,
         }),
       });
-
-      if (response.ok) {
-        const data = await response.text();
-        const llmMessage = { content: data, role: "system" };
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          userMessage,
-          llmMessage,
-        ]);
-        // Toggle forceUpdate to trigger re-render
-        setForceUpdate((prev) => !prev);
-        console.log("messages.messages", messages);
-      } else {
+      if (!response.ok || !response.body) {
         console.error("Failed to get response from the LLM");
       }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      const loopRunner = true;
+
+      while (loopRunner) {
+        // Here we start reading the stream, until its done.
+        const { value, done } = await reader.read();
+        if (done) {
+          break;
+        }
+        const decodedChunk = decoder.decode(value, { stream: true });
+        setAnswer((answer) => answer + decodedChunk); // update state with new chunk
+      }
+
+      const llmMessage = { content: answer, role: "system" };
+      setMessages((prevMessages) => [...prevMessages, userMessage, llmMessage]);
+      // Toggle forceUpdate to trigger re-render
+      setForceUpdate((prev) => !prev);
+      console.log("messages.messages", messages);
     } catch (error) {
       console.error("Error:", error);
     }
