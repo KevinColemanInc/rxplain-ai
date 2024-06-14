@@ -47,6 +47,10 @@ async def root():
 
 @app.post("/prompt")
 async def prompt(req_body: RequestBody):
+    return StreamingResponse(get_openai_generator(req_body))
+
+
+def get_openai_generator(req_body: RequestBody):
     messages = [
         {
             "role": "system",
@@ -62,11 +66,12 @@ async def prompt(req_body: RequestBody):
         }
     )
     print("messages", messages)
-    response = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages)
-    print(response.choices[0].message.content)
-
-    # Return an instance of PromptResponse
-    return response.choices[0].message.content
+    openai_stream = client.chat.completions.create(
+        model="gpt-3.5-turbo", messages=messages, stream=True
+    )
+    for event in openai_stream:
+        current_response = event.choices[0].delta.content or ""
+        yield current_response
 
 
 def fake_response_streamer():
