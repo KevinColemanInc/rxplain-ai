@@ -7,7 +7,7 @@ function FilterButton({ label }) {
     <div className="p-2 flex flex-row justify-center">
       <button
         onClick={() => setIsVisible(false)}
-        className="text-gray-500 hover:bg-red-500 hover:text-white rounded-full flex items-center justify-center bg-sky-200"
+        className="text-gray-500 hover:bg-slate-700 hover:text-white rounded-full flex items-center justify-center bg-slate-200"
       >
         {label} &times;
       </button>

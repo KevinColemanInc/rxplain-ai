@@ -7,7 +7,7 @@ function App() {
   const [filters, setFilters] = useState([]);
 
   return (
-    <main className="flex flex-col justify-center items-center gap-4 h-screen w-screen bg-gray-100">
+    <main className="flex flex-col justify-center items-center gap-4 h-screen w-screen bg-gray-100 p-5">
       <Contexts
         filters={filters}
         setFilters={setFilters}
