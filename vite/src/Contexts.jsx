@@ -18,9 +18,9 @@ function Context({ filters, setFilters }) {
   };
 
   return (
-    <div className="flex flex-col items-center max-w-screen-2xl border border-gray-300 rounded-lg justify-center bg-white w-full w-2/5 md:w-6/12 p-2">
+    <div className="flex flex-col items-center max-w-screen-2xl border border-gray-300 rounded-lg justify-center bg-white w-full md:w-6/12 p-2">
       {filters.length > 0 ? (
-        <div className="flex flex-row flex-wrap items-start justify-start">
+        <div className="w-full py-2 overflow-x-auto flex flex-row items-start justify-start">
           {filters.map((filter, index) => (
             <FilterButton key={index} label={filter} />
           ))}

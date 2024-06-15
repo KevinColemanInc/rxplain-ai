@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import ResponseBox from "./ResponseBox.jsx";
 import { useStateCallback } from "./useStateCallback.js";
+import { motion } from "framer-motion";
+import DropdownButton from "./DropdownButton.jsx";
+import toast from "react-hot-toast";
 
 function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
   const [input, setInput] = useState("");
@@ -41,7 +44,7 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     try {
-      const response = await fetch("http://localhost:8000/prompt-static", {
+      const response = await fetch("http://localhost:8000/prompt", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,10 +108,14 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
   }, [forceUpdate]);
 
   return (
-    <div
-      className={`${containerClassName} flex flex-col h-full w-full max-w-screen-2xl border border-gray-300 rounded flex-shrink-0 bg-white `}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      exit={{ opacity: 0 }}
+      className={`${containerClassName} flex flex-col h-full border w-[calc(100%-0.25rem)] md:w-6/12 border-gray-300 rounded flex-shrink-0 bg-white`}
     >
-      <div className="flex-1 overflow-y-auto p-2.5 rounded-[5px] mb-2.5 w-max">
+      <div className="flex flex-col gap-4 flex-1 overflow-y-auto p-2.5 rounded-[5px] mb-2.5">
         {messages.map(
           (message, index) =>
             message.content && (
@@ -118,73 +125,12 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
                     text={message.content}
                     onPhraseClick={onPhraseClick}
                   />
-                  <button
-                    id="dropdownMenuIconButton"
-                    data-dropdown-toggle="dropdownDots"
-                    data-dropdown-placement="bottom-start"
-                    className="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600"
-                    type="button"
-                  >
-                    <svg
-                      className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 4 15"
-                    >
-                      <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                    </svg>
-                  </button>
-                  <div
-                    id="dropdownDots"
-                    className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600"
-                  >
-                    <ul
-                      className="py-2 text-sm text-gray-700 dark:text-gray-200"
-                      aria-labelledby="dropdownMenuIconButton"
-                    >
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Reply
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Forward
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Copy
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Report
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Delete
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                  <DropdownButton
+                    onCopy={() => {
+                      navigator.clipboard.writeText(message.content);
+                      toast.success("Copied message!");
+                    }}
+                  />
                 </div>
               </>
             ),
@@ -209,7 +155,7 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
           </button>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
