@@ -21,12 +21,12 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
           callLLM("Tell me about " + prompt, updatedMessages).finally(() => {
             hasCalledLLMRef.current = false; // Reset the ref to false after calling callLLM
           });
-        },
+        }
       );
       hasCalledLLMRef.current = true; // Set the ref to true after calling callLLM
     } else {
       console.log(
-        "Skipping callLLM due to empty or undefined prompt or already called",
+        "Skipping callLLM due to empty or undefined prompt or already called"
       );
     }
   }, [prompt]);
@@ -44,7 +44,7 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     try {
-      const response = await fetch("http://localhost:8000/prompt", {
+      const response = await fetch("http://localhost:8000/prompt-static", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
                   />
                 </div>
               </>
-            ),
+            )
         )}
       </div>
       <div className="p-0 rounded border-none m-2.5 bg-gray-100">

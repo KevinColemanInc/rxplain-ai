@@ -8,6 +8,10 @@ function Context({ filters, setFilters }) {
     setInputVal(input.target.value);
   };
 
+  const onRemove = (filter) => {
+    setFilters(filters.filter((f) => f !== filter));
+  };
+
   const submit = (input) => {
     input.preventDefault();
     if (inputVal.trim() !== "") {
@@ -22,7 +26,7 @@ function Context({ filters, setFilters }) {
       {filters.length > 0 ? (
         <div className="w-full py-2 overflow-x-auto flex flex-row items-start justify-start">
           {filters.map((filter, index) => (
-            <FilterButton key={index} label={filter} />
+            <FilterButton key={index} label={filter} onRemove={onRemove} />
           ))}
         </div>
       ) : null}
