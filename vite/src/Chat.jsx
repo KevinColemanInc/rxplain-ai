@@ -1,23 +1,32 @@
 import { useEffect, useRef, useState } from "react";
 import ResponseBox from "./ResponseBox.jsx";
+import { useStateCallback } from "./useStateCallback.js";
+import { motion } from "framer-motion";
+import DropdownButton from "./DropdownButton.jsx";
+import toast from "react-hot-toast";
 
 function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
   const [input, setInput] = useState("");
   const [forceUpdate, setForceUpdate] = useState(false); // Dummy state for force update
-  const [messages, setMessages] = useState([]);
+  const [isStreamingMessage, setIsStreamingMessage] = useState(false); // Dummy state for force update
+  const [messages, setMessages] = useStateCallback([]);
   const hasCalledLLMRef = useRef(false); // Ref to track if callLLM has been called
 
   useEffect(() => {
     if (prompt && prompt.trim() !== "" && !hasCalledLLMRef.current) {
       console.log("Calling callLLM with prompt:", prompt);
-      setMessages(() => []);
-      callLLM("Tell me about " + prompt).finally(() => {
-        hasCalledLLMRef.current = false; // Reset the ref to false after calling callLLM
-      });
+      setMessages(
+        () => [],
+        (updatedMessages) => {
+          callLLM("Tell me about " + prompt, updatedMessages).finally(() => {
+            hasCalledLLMRef.current = false; // Reset the ref to false after calling callLLM
+          });
+        },
+      );
       hasCalledLLMRef.current = true; // Set the ref to true after calling callLLM
     } else {
       console.log(
-        "Skipping callLLM due to empty or undefined prompt or already called"
+        "Skipping callLLM due to empty or undefined prompt or already called",
       );
     }
   }, [prompt]);
@@ -25,40 +34,65 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
     setInput(e.target.value);
   };
 
-  const callLLM = async (input) => {
+  const callLLM = async (input, listMessages = messages) => {
     if (input.trim() === "") return;
     const userMessage = { content: input, role: "user" };
     setInput("");
 
+    const messageIndex = listMessages.length + 1;
+
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
+
     try {
-      const response = await fetch("http://localhost:8000/prompt-static", {
+      const response = await fetch("http://localhost:8000/prompt", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           new_context: contexts.join(" "),
-          history: messages,
+          history: listMessages,
           text_input: input,
         }),
       });
 
       if (response.ok) {
-        const data = await response.text();
-        const llmMessage = { content: data, role: "system" };
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          userMessage,
-          llmMessage,
-        ]);
+        const reader = response.body.getReader();
+        let decoder = new TextDecoder();
+        let partialMessage = "";
+        let done = false;
+        setIsStreamingMessage(true);
+
+        while (!done) {
+          const { value, done: isDone } = await reader.read();
+          done = isDone;
+          if (value) {
+            const chunk = decoder.decode(value, { stream: !done });
+            partialMessage += chunk;
+
+            const llmMessage = { content: partialMessage, role: "system" };
+
+            setMessages((prevMessages) => {
+              const newMessages = [...prevMessages];
+              if (newMessages[messageIndex]) {
+                newMessages[messageIndex] = llmMessage;
+              } else {
+                newMessages.push(llmMessage);
+              }
+              return newMessages;
+            });
+          }
+        }
         // Toggle forceUpdate to trigger re-render
         setForceUpdate((prev) => !prev);
-        console.log("messages.messages", messages);
+        console.log("messages.messages", listMessages);
       } else {
         console.error("Failed to get response from the LLM");
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setIsStreamingMessage(false);
     }
   };
   const handleSendMessage = async (e) => {
@@ -74,96 +108,39 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
   }, [forceUpdate]);
 
   return (
-    <div
-      className={`${containerClassName} flex flex-col h-full w-600 max-w-600 border border-gray-300 rounded flex-shrink-0 bg-white`}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      exit={{ opacity: 0 }}
+      className={`${containerClassName} flex flex-col h-full border w-[calc(100%-0.25rem)] md:w-6/12 border-gray-300 rounded flex-shrink-0 bg-white`}
     >
-      <div className="flex-1 overflow-y-auto p-2.5 rounded-[5px] mb-2.5">
+      <div className="flex flex-col gap-4 flex-1 overflow-y-auto p-2.5 rounded-[5px] mb-2.5">
         {messages.map(
           (message, index) =>
             message.content && (
               <>
-                <div class="flex items-start gap-2.5">
-                  <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
-                    <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">
-                      {message.content}
-                    </p>
-                  </div>
-                  <button
-                    id="dropdownMenuIconButton"
-                    data-dropdown-toggle="dropdownDots"
-                    data-dropdown-placement="bottom-start"
-                    class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600"
-                    type="button"
-                  >
-                    <svg
-                      class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 4 15"
-                    >
-                      <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                    </svg>
-                  </button>
-                  <div
-                    id="dropdownDots"
-                    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600"
-                  >
-                    <ul
-                      class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                      aria-labelledby="dropdownMenuIconButton"
-                    >
-                      <li>
-                        <a
-                          href="#"
-                          class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Reply
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Forward
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Copy
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Report
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Delete
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                <div key={index} className="flex items-start gap-2.5">
+                  <ResponseBox
+                    text={message.content}
+                    onPhraseClick={onPhraseClick}
+                  />
+                  <DropdownButton
+                    onCopy={() => {
+                      navigator.clipboard.writeText(message.content);
+                      toast.success("Copied message!");
+                    }}
+                  />
                 </div>
               </>
-            )
+            ),
         )}
       </div>
       <div className="p-0 rounded border-none m-2.5 bg-gray-100">
         <form onSubmit={handleSendMessage} className="flex m-2.5">
           <input
             type="text"
+            disabled={isStreamingMessage}
             value={input}
             onChange={handleInputChange}
             placeholder="Type a message..."
@@ -171,13 +148,14 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
           />
           <button
             type="submit"
+            disabled={isStreamingMessage}
             className="py-1.5 px-2.5 rounded-[50px] border-none bg-gray-400 text-white ml-2.5 hover:bg-blue-400 active:bg-blue-400"
           >
             ↑
           </button>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

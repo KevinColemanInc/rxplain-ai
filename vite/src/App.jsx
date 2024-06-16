@@ -2,12 +2,13 @@ import { useState } from "react";
 import "./App.css";
 import ChatArea from "./ChatArea";
 import Contexts from "./Contexts";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [filters, setFilters] = useState([]);
 
   return (
-    <main className="flex flex-col justify-center items-center gap-4 h-screen w-screen bg-gray-100">
+    <main className="flex flex-col justify-center items-center gap-4 h-screen w-screen bg-gray-100 p-5">
       <Contexts
         filters={filters}
         setFilters={setFilters}
@@ -17,6 +18,8 @@ function App() {
         contexts={filters}
         className="flex-1 max-h-[80vh] grid grid-cols-1 w-full"
       />
+
+      <Toaster position="top-center" />
     </main>
   );
 }

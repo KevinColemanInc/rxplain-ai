@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import Chat from "./Chat";
+import { AnimatePresence } from "framer-motion";
 
 function ChatArea({ contexts }) {
   const [chatWindows, setChatWindows] = useState([""]);
@@ -28,17 +29,21 @@ function ChatArea({ contexts }) {
   return (
     <div
       ref={scrollList}
-      class="flex h-full gap-4 flex-row overflow-x-auto pb-5 pl-2 pr-2"
+      className="flex h-full gap-4 flex-row overflow-x-auto pb-5 w-full snap snap-x snap-mandatory"
     >
-      {chatWindows.map((chatWindow, index) => (
-        <Chat
-          key={index}
-          onPhraseClick={(url) => onPhraseClick(url, index)}
-          prompt={chatWindow}
-          containerClassName={chatWindows.length < 2 ? "mx-auto" : ""}
-          contexts={contexts}
-        />
-      ))}
+      <AnimatePresence>
+        {chatWindows.map((chatWindow, index) => (
+          <Chat
+            key={index}
+            onPhraseClick={(url) => onPhraseClick(url, index)}
+            prompt={chatWindow}
+            containerClassName={
+              chatWindows.length < 2 ? "mx-auto" : "snap-center"
+            }
+            contexts={contexts}
+          />
+        ))}
+      </AnimatePresence>
     </div>
   );
 }
