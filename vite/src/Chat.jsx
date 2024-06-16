@@ -44,7 +44,7 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     try {
-      const response = await fetch("http://localhost:8000/prompt-static", {
+      const response = await fetch("http://localhost:8000/prompt", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

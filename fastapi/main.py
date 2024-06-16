@@ -54,7 +54,7 @@ def get_openai_generator(req_body: RequestBody):
     messages = [
         {
             "role": "system",
-            "content": f"You are an expert in Healthcare terminology be empathetic. important phrases or keywords should be bracketed for example: [skin cancer] context: {req_body.new_context}",
+            "content": f"You are an expert in Healthcare terminology be empathetic. respond with markdown. emphasize keywords. Always have at least 2 unique keyword. context: {req_body.new_context}",
         }
     ]
     messages = messages + req_body.history
