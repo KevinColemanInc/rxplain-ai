@@ -1,17 +1,19 @@
-from dotenv import load_dotenv
-
-load_dotenv()
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from typing import List, Optional
 import openai
 import os
 
 api_key = os.getenv("OPENAI_API_KEY")
 client = openai.OpenAI(api_key=api_key)
+
+
+async def on_fetch(request, env):
+    import asgi
+
+    return await asgi.fetch(app, request, env)
+
 
 app = FastAPI()
 
