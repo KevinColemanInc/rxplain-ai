@@ -42,6 +42,10 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
     const messageIndex = listMessages.length + 1;
 
     setMessages((prevMessages) => [...prevMessages, userMessage]);
+    let host = "http://localhost:8000";
+    if (import.meta.env.PROD) {
+      host = "https://rxplain-api.kcoleman.me/";
+    }
 
     try {
       const response = await fetch("http://localhost:8000/prompt", {
