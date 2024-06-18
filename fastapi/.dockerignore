@@ -1,0 +1,4 @@
+# flyctl launch added from .gitignore
+**/__pychache__
+**/main.cpython-311.pyc
+fly.toml
