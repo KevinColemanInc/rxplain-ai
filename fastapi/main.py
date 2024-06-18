@@ -19,6 +19,7 @@ app = FastAPI()
 
 # Set up CORS to allow requests from any origin
 origins = [
+    "https://rxplain.kcoleman.me",
     "http://localhost:8080",
 ]
 
@@ -96,3 +97,7 @@ def fake_response_streamer():
 @app.post("/prompt-static")
 async def prompt_static(req_body: RequestBody):
     return StreamingResponse(fake_response_streamer())
+
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5001)

@@ -22,3 +22,6 @@ exportdocs:
 
 export_conda:
 	conda env export | grep -v "^prefix: " > rxplain_env.yml
+
+make_requirements:
+	conda list -e > requirements.txt
