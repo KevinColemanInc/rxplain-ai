@@ -44,11 +44,11 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     let host = "http://localhost:8000";
     if (import.meta.env.PROD) {
-      host = "https://rxplain-api.kcoleman.me/";
+      host = "https://rxplain.kcoleman.me/";
     }
 
     try {
-      const response = await fetch("http://localhost:8000/prompt", {
+      const response = await fetch(host + "/prompt", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
