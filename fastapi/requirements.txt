@@ -22,7 +22,6 @@ orjson==3.10.3
 packaging==23.2
 pip==24.0
 pydantic==2.5.3
-pydantic_core==2.18.3
 Pygments==2.18.0
 python-dotenv==1.0.1
 python-multipart==0.0.9
