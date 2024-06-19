@@ -39,7 +39,7 @@ class HistoryItem(BaseModel):
 
 class RequestBody(BaseModel):
     new_context: str
-    history: List[HistoryItem]
+    history: list[HistoryItem]
     text_input: str
 
 
