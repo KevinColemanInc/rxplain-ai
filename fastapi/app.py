@@ -19,7 +19,7 @@ app = FastAPI()
 
 # Set up CORS to allow requests from any origin
 origins = [
-    "https://rxplain.kcoleman.me",
+    "https://rxplain.kcoleman.me/",
     "http://localhost:8080",
 ]
 

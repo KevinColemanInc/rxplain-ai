@@ -44,7 +44,7 @@ function Chat({ onPhraseClick, prompt, contexts, containerClassName }) {
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     let host = "http://localhost:8000";
     if (import.meta.env.PROD) {
-      host = "https://rxplain.fly.dev/";
+      host = "https://rxplain.fly.dev";
     }
 
     try {
