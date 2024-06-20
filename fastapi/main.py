@@ -8,24 +8,17 @@ import os
 api_key = os.getenv("OPENAI_API_KEY")
 client = openai.OpenAI(api_key=api_key)
 
-
-async def on_fetch(request, env):
-    import asgi
-
-    return await asgi.fetch(app, request, env)
-
-
 app = FastAPI()
 
 # Set up CORS to allow requests from any origin
 origins = [
-    "https://rxplain.kcoleman.me/",
+    "https://rxplain.kcoleman.me",
     "http://localhost:8080",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=[origins],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
